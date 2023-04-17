@@ -15,6 +15,7 @@ const getAllContacts = async (req, res) => {
     "owner",
     "email"
   );
+
   res.json(result);
 };
 
@@ -37,6 +38,7 @@ const addContact = async (req, res) => {
     throw HttpError(409, "Email or phone already in use");
   }
   const result = await Contact.create({ ...req.body, owner });
+
   res.status(201).json(result);
 };
 
