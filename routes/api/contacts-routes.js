@@ -6,9 +6,17 @@ const ctrl = require("../../controllers/contacts-controllers");
 
 const { isValidId, authenticate } = require("../../middlewares");
 
+
 const { validateBody } = require("../../utils");
 
 const schemas = require("../../models/contact-shema");
+
+
+const { validateBody } = require("../../utils");
+
+const schemas = require("../../models/contact-schema");
+
+
 
 router.get("/", authenticate, ctrl.getAllContacts);
 
@@ -30,6 +38,7 @@ router.get("/:contactId", ctrl.getContactById);
 router.post("/", validateBody(schemas.addSchema), ctrl.addContact);
 
 router.delete("/:contactId", ctrl.deleteContactById);
+
 
 router.put(
   "/:contactId",

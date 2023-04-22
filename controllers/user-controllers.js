@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { ctrlWrapper } = require("../utils");
 const jwt = require("jsonwebtoken");
+
 const { User } = require("../models/user-shema");
 const gravatar = require("gravatar");
 const path = require("path");
@@ -8,6 +9,12 @@ const path = require("path");
 const { HttpError } = require("../helpers");
 const { SECRET_KEY } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
+
+const { User } = require("../models/user-schema");
+
+const { HttpError } = require("../helpers");
+
+
 const register = async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
@@ -16,6 +23,7 @@ const register = async (req, res) => {
     throw HttpError(409, "Email in use");
   }
   const hashPassword = await bcrypt.hash(password, 10);
+
   const avatarURL = gravatar.url(email);
   console.log(hashPassword);
   const result = await User.create({
@@ -23,6 +31,9 @@ const register = async (req, res) => {
     password: hashPassword,
     avatarURL,
   });
+
+  
+
 
   res.status(201).json({
     name: result.name,
@@ -81,6 +92,7 @@ const updateUserSubscription = async (req, res) => {
 
   res.json(updatedUser);
 };
+
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, filename } = req.file;
@@ -92,11 +104,14 @@ const updateAvatar = async (req, res) => {
 
   res.json({ avatarURL });
 };
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   updateUserSubscription: ctrlWrapper(updateUserSubscription),
+
   updateAvatar: ctrlWrapper(updateAvatar),
+
 };

@@ -1,4 +1,5 @@
-const { Contact } = require("../models/contact-shema");
+const { Contact } = require("../models/contact-schema");
+
 const HttpError = require("../helpers/HttpError");
 const { ctrlWrapper } = require("../utils");
 
