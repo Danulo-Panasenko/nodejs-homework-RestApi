@@ -1,9 +1,9 @@
 const { Contact } = require("../models/contact-schema");
+
 const HttpError = require("../helpers/HttpError");
 const { ctrlWrapper } = require("../utils");
 
 const getAllContacts = async (req, res) => {
-
   const { _id: owner } = req.user;
   const { page = 1, limit = 20, favorite } = req.query;
   const skip = (page - 1) * limit;
@@ -12,8 +12,6 @@ const getAllContacts = async (req, res) => {
   if (favorite === "true") {
     filter.favorite = true;
   }
-  
-
 
   const result = await Contact.find();
 
@@ -30,7 +28,6 @@ const getContactById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-
   const { _id: owner } = req.user;
   const { email, phone } = req.body;
   const existingContact = await Contact.findOne({
@@ -40,8 +37,6 @@ const addContact = async (req, res) => {
     throw HttpError(409, "Email or phone already in use");
   }
   const result = await Contact.create({ ...req.body, owner });
-
-
 
   res.status(201).json(result);
 };

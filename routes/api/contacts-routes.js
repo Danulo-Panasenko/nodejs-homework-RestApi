@@ -9,7 +9,13 @@ const { isValidId, authenticate } = require("../../middlewares");
 
 const { validateBody } = require("../../utils");
 
+const schemas = require("../../models/contact-shema");
+
+
+const { validateBody } = require("../../utils");
+
 const schemas = require("../../models/contact-schema");
+
 
 
 router.get("/", authenticate, ctrl.getAllContacts);
