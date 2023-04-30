@@ -2,14 +2,24 @@ const bcrypt = require("bcryptjs");
 const { ctrlWrapper } = require("../utils");
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../models/user-schema");
-const gravatar = require("gravatar");
-const path = require("path");
-// const { nanoid } = require("nanoid");
+
 
 const { HttpError, sendEmail } = require("../helpers");
 const { SECRET_KEY, BASE_URL } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
+
+
+const { User } = require("../models/user-shema");
+const gravatar = require("gravatar");
+const path = require("path");
+
+
+
+const { User } = require("../models/user-schema");
+
+const { HttpError } = require("../helpers");
+
+
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -21,12 +31,15 @@ const register = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, 10);
 
   const avatarURL = gravatar.url(email);
+
   const verificationToken = nanoid();
+
   console.log(hashPassword);
   const result = await User.create({
     ...req.body,
     password: hashPassword,
     avatarURL,
+
     verificationToken,
   });
   const verifyEmail = {
@@ -91,6 +104,16 @@ const resendVerifyEmail = async (req, res) => {
   });
 };
 
+
+
+  
+
+
+  res.status(201).json({
+    name: result.name,
+    email: result.email,
+  });
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -152,18 +175,29 @@ const updateAvatar = async (req, res) => {
   await fs.rename(tempUpload, resultUpload);
   const avatarURL = path.join("avatars", avatarName);
   await User.findByIdAndUpdate(_id, { avatarURL });
+
   const avatarImage = await Jimp.read(resultUpload);
   await avatarImage.resize(250, 250).write(resultUpload);
+
+
   res.json({ avatarURL });
 };
 
 module.exports = {
   register: ctrlWrapper(register),
+
   verify: ctrlWrapper(verify),
   resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
+
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   updateUserSubscription: ctrlWrapper(updateUserSubscription),
+
   updateAvatar: ctrlWrapper(updateAvatar),
+
+
+ 
+
+
 };
