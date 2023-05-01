@@ -7,14 +7,11 @@ const ctrl = require("../../controllers/contacts-controllers");
 const { isValidId, authenticate } = require("../../middlewares");
 
 
-const { validateBody } = require("../../utils");
-
-const schemas = require("../../models/contact-shema");
-
 
 const { validateBody } = require("../../utils");
 
 const schemas = require("../../models/contact-schema");
+
 
 
 
